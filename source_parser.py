@@ -5,7 +5,7 @@ import compiler
 class SourceParser():
     def __init__(self, source_file):
         self.source_classes = []
-        self.source = compiler.parseFile('test/test_class.py')
+        self.source = compiler.parseFile(source_file)
 
         self._get_classes()
 
@@ -19,6 +19,20 @@ class SourceParser():
         self.source_classes = []
         for source_class in zip(walked_classes.class_nodes, num_props):
             self.source_classes.append(SourceClass(source_class[0].name, source_class[1]))
+
+
+        for class_node in walked_classes.class_nodes:
+            if class_node.asList()[1]:
+                parent_class_name = class_node.asList()[1].name
+
+                this_class = None
+                for source_class in self.source_classes:
+                    if source_class.get_name() == class_node.name:
+                        this_class = source_class
+
+                for source_class in self.source_classes:
+                    if source_class.get_name() == parent_class_name:
+                        this_class.set_num_props(source_class.get_num_properties() + this_class.get_num_properties())
 
     def get_classes(self):
         return self.source_classes
