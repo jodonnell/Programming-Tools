@@ -10,36 +10,29 @@ class SourceParser():
         self._get_classes()
 
     def _get_classes(self):
-        mama = compiler.walk(self.source, Visitor())
-        self.source_classes = mama._class_names
+        walked_classes = compiler.walk(self.source, ClassVisitor())
+        self.source_classes = walked_classes.class_names
 
-        self.source_classes[0].set_num_props(compiler.walk(mama._classes[0], Visitor2())._num_props)
+        self.source_classes[0].set_num_props(compiler.walk(walked_classes.classes[0], PropertyVisitor()).num_props)
 
 
     def get_classes(self):
         return self.source_classes
 
-class Visitor(compiler.visitor.ASTVisitor):
+class ClassVisitor(compiler.visitor.ASTVisitor):
     def __init__(self):
-        self._class_names = []
-        self._classes = []
-
-    def visitName(self, node):
-        import pdb; pdb.set_trace()
-
-    def visitFunction(self, node):
-        import pdb; pdb.set_trace()
-        print node.name
+        self.class_names = []
+        self.classes = []
 
     def visitClass(self, node):
-        self._class_names.append(SourceClass(node.name))
-        self._classes.append(node)
+        self.class_names.append(SourceClass(node.name))
+        self.classes.append(node)
 
 
-class Visitor2(compiler.visitor.ASTVisitor):
+class PropertyVisitor(compiler.visitor.ASTVisitor):
     def __init__(self):
-        self._num_props = 0
+        self.num_props = 0
 
     def visitAssAttr(self, node):
-        self._num_props += 1
+        self.num_props += 1
         
