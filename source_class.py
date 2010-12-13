@@ -9,3 +9,6 @@ class SourceClass():
 
     def get_name(self):
         return self._name
+
+    def set_num_props(self, num_props):
+        self._num_properties = num_props

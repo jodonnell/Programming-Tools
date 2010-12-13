@@ -12,4 +12,5 @@ class TestClass():
         self.eight = 8
 
 class TestClass2():
-    pass
+    def method2(self):
+        pass
