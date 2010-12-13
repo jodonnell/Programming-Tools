@@ -1,7 +1,7 @@
 
 class SourceClass():
-    def __init__(self, name):
-        self._num_properties = 1
+    def __init__(self, name, num_props):
+        self._num_properties = num_props
         self._name = name
 
     def get_num_properties(self):

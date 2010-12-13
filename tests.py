@@ -15,6 +15,7 @@ class ToolsTest(unittest.TestCase):
 
     def test_class_properties(self):
         self.assertEqual(8, self.source_classes[0].get_num_properties())
+        self.assertEqual(2, self.source_classes[1].get_num_properties())
 
 
 

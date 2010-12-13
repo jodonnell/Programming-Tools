@@ -13,4 +13,5 @@ class TestClass():
 
 class TestClass2():
     def method2(self):
-        pass
+        self.one = 1
+        self.two = 2

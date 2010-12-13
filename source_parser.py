@@ -11,10 +11,14 @@ class SourceParser():
 
     def _get_classes(self):
         walked_classes = compiler.walk(self.source, ClassVisitor())
-        self.source_classes = walked_classes.class_names
 
-        self.source_classes[0].set_num_props(compiler.walk(walked_classes.classes[0], PropertyVisitor()).num_props)
+        num_props = []
+        for class_node in walked_classes.class_nodes:
+            num_props.append(compiler.walk(class_node, PropertyVisitor()).num_props)
 
+        self.source_classes = []
+        for source_class in zip(walked_classes.class_nodes, num_props):
+            self.source_classes.append(SourceClass(source_class[0].name, source_class[1]))
 
     def get_classes(self):
         return self.source_classes
@@ -22,11 +26,10 @@ class SourceParser():
 class ClassVisitor(compiler.visitor.ASTVisitor):
     def __init__(self):
         self.class_names = []
-        self.classes = []
+        self.class_nodes = []
 
     def visitClass(self, node):
-        self.class_names.append(SourceClass(node.name))
-        self.classes.append(node)
+        self.class_nodes.append(node)
 
 
 class PropertyVisitor(compiler.visitor.ASTVisitor):
